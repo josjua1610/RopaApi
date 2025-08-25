@@ -14,14 +14,16 @@ class ClothController extends Controller
 {
 public function index(Request $request)
 {
-///$q = Cloth::with(['type','brand','size','color','images']);
-$q = Cloth::query();
-if ($s = $request->get('search')) $q->where('name', 'like', "%{$s}%");
-if ($id = $request->get('type_id')) $q->where('type_id', $id);
-if ($id = $request->get('brand_id')) $q->where('brand_id', $id);
-if ($g = $request->get('gender')) $q->where('gender', $g);
-return $q->orderByDesc('id')->paginate(20);
+    $q = Cloth::with(['type', 'brand', 'size', 'color', 'images']);
+
+    if ($s = $request->get('search')) $q->where('name', 'like', "%{$s}%");
+    if ($id = $request->get('type_id')) $q->where('type_id', $id);
+    if ($id = $request->get('brand_id')) $q->where('brand_id', $id);
+    if ($g = $request->get('gender')) $q->where('gender', $g);
+
+    return $q->orderByDesc('id')->paginate(20);
 }
+
 
 
 public function show(Cloth $cloth)
