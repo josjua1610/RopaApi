@@ -97,4 +97,20 @@ public function destroy(Cloth $clothes)
         'message' => 'Producto eliminado correctamente'
     ]);
 }
+public function findById($id)
+{
+    if (!ctype_digit((string)$id)) {
+        return response()->json(['message' => 'ID inválido'], 422);
+    }
+
+    $cloth = \App\Models\Cloth::with(['type','brand','size','color','images','primaryImage'])
+        ->find($id);
+
+    if (!$cloth) {
+        return response()->json(['message' => 'Producto no encontrado'], 404);
+    }
+
+    return response()->json($cloth);
+}
+
 }

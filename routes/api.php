@@ -5,6 +5,8 @@ use App\Http\Controllers\{ClothController, CatalogController};
 
 Route::apiResource('clothes', ClothController::class);
 
+Route::get('clothes/by-id/{id}', [ClothController::class, 'findById']);
+
 
 Route::prefix('catalog')->group(function(){
 Route::get('types', [CatalogController::class, 'types']);
