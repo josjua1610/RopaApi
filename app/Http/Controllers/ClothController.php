@@ -21,7 +21,7 @@ public function index(Request $request)
     if ($id = $request->get('brand_id')) $q->where('brand_id', $id);
     if ($g = $request->get('gender')) $q->where('gender', $g);
 
-    return $q->orderByDesc('id')->paginate(20);
+    return $q->orderByDesc('id')->paginate(200);
 }
 
 
@@ -34,19 +34,22 @@ return $cloth->load(['type','brand','size','color','images']);
 
 public function store(Request $request)
 {
+
 $data = $request->validate([
-'name' => ['required','string','max:255'],
-'type_id' => ['required','exists:clothing_types,id'],
-'brand_id' => ['required','exists:brands,id'],
-'size_id' => ['required','exists:sizes,id'],
-'color_id' => ['required','exists:colors,id'],
-'gender' => ['required', Rule::in(['male','female','unisex'])],
-'purchase_price' => ['required','numeric','min:0'],
-'sale_price' => ['required','numeric','min:0'],
-'images' => ['nullable','array'],
-'images.*' => ['file','image','mimes:jpg,jpeg,png,webp','max:5120'],
-'primary_index' => ['nullable','integer','min:0'],
+    'name'           => ['required','string','max:255'],
+    'type_id'        => ['required','exists:clothing_types,id'],
+    'brand_id'       => ['required','exists:brands,id'],
+    'size_id'        => ['required','exists:sizes,id'],
+    'color_id'       => ['required','exists:colors,id'],
+    'gender'         => ['required', Rule::in(['male','female','unisex'])],
+    'purchase_price' => ['required','numeric','min:0'],
+    'sale_price'     => ['required','numeric','min:0'],
+    'stock'          => ['required','integer','min:0'], // <--- agregado
+    'images'         => ['nullable','array'],
+    'images.*'       => ['file','image','mimes:jpg,jpeg,png,webp','max:5120'],
+    'primary_index'  => ['nullable','integer','min:0'],
 ]);
+
 
 
 return DB::transaction(function() use ($data, $request) {
@@ -73,15 +76,19 @@ return $cloth->load(['type','brand','size','color','images']);
 public function update(Request $request, Cloth $clothes)
 {
     $data = $request->validate([
-        'name'           => 'required|string',
-        'type_id'        => 'required|exists:clothing_types,id',
-        'brand_id'       => 'required|exists:brands,id',
-        'size_id'        => 'required|exists:sizes,id',
-        'color_id'       => 'required|exists:colors,id',
-        'gender'         => 'required|string',
-        'purchase_price' => 'required|numeric',
-        'sale_price'     => 'required|numeric',
-    ]);
+    'name'           => 'required|string',
+    'type_id'        => 'required|exists:clothing_types,id',
+    'brand_id'       => 'required|exists:brands,id',
+    'size_id'        => 'required|exists:sizes,id',
+    'color_id'       => 'required|exists:colors,id',
+    'gender'         => 'required|string',
+    'purchase_price' => 'required|numeric',
+    'sale_price'     => 'required|numeric',
+    'stock'          => 'required|integer|min:0', // <--- agregado
+]);
+
+
+
 
     $clothes->update($data);
 

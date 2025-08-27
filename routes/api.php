@@ -1,26 +1,26 @@
-<?php
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{ClothController, CatalogController};
+    <?php
+    use Illuminate\Support\Facades\Route;
+    use App\Http\Controllers\{ClothController, CatalogController};
 
 
-Route::apiResource('clothes', ClothController::class);
+    Route::apiResource('clothes', ClothController::class);
 
-Route::get('clothes/by-id/{id}', [ClothController::class, 'findById']);
-
-
-Route::prefix('catalog')->group(function(){
-Route::get('types', [CatalogController::class, 'types']);
-Route::post('types', [CatalogController::class, 'storeType']);
+    Route::get('clothes/by-id/{id}', [ClothController::class, 'findById']);
 
 
-Route::get('brands', [CatalogController::class, 'brands']);
-Route::post('brands', [CatalogController::class, 'storeBrand']);
+    Route::prefix('catalog')->group(function(){
+    Route::get('types', [CatalogController::class, 'types']);
+    Route::post('types', [CatalogController::class, 'storeType']);
 
 
-Route::get('sizes', [CatalogController::class, 'sizes']);
-Route::post('sizes', [CatalogController::class, 'storeSize']);
+    Route::get('brands', [CatalogController::class, 'brands']);
+    Route::post('brands', [CatalogController::class, 'storeBrand']);
 
 
-Route::get('colors', [CatalogController::class, 'colors']);
-Route::post('colors', [CatalogController::class, 'storeColor']);
-});
+    Route::get('sizes', [CatalogController::class, 'sizes']);
+    Route::post('sizes', [CatalogController::class, 'storeSize']);
+
+
+    Route::get('colors', [CatalogController::class, 'colors']);
+    Route::post('colors', [CatalogController::class, 'storeColor']);
+    }); 
